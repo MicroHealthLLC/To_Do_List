@@ -1,0 +1,151 @@
+body {
+  background-color: #f8f8f8;
+}
+
+#topbar {
+  width: 96%;
+  margin: 0 auto;
+  padding: 5px 20px;
+  background-color: white;
+}
+h1 {
+  font: normal 24px/100% Helvetica, Arial, sans-serif;
+}
+#colorkey {
+  line-height:150%;
+}
+.keygroup {
+  white-space: nowrap;
+  margin-right: 8px;
+}
+.key {
+  padding: 5px 5px 3px 5px;
+}
+.code-primary {
+  color: #337ab7;
+}
+.code-success {
+  color: #5cb85c;
+}
+.code-warning {
+  color: #f0ad4e;
+}
+.code-danger {
+  color: #e27c79;
+}
+.code-info {
+  color: #5bc0de;
+}
+
+
+.container {
+  width: 96%;
+  height: 580px;
+  margin-top: 0;
+  background-color: #ccc;
+}
+
+#btnbar {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 80px;
+}
+#btnbar button {
+  margin-left: 10px;
+}
+
+#importtodos {
+  position: fixed;
+  top: 174px;
+  right: 30px;
+  z-index: 100;
+  border: 1px solid #999;
+  background-color: white;
+  width: 426px;
+  height: 180px;
+  margin: 10px auto;
+  padding: 20px;
+}
+h4 {
+  font: bold 16px/100% Helvetica, Arial, sans-serif;
+  color: #333;
+  margin-bottom: 20px;
+}
+#preview {
+  margin-top: 10px;
+  width: 100%;
+  height: 150px;
+  max-height: 150px;
+  resize: none;
+}
+
+#cancel_upload {
+  float: right;
+  margin: 20px 0px 20px auto;
+}
+#submit_upload {
+  float: right;
+  margin: 20px 0px 20px 10px;
+}
+
+.lobilists.single-line {
+  height: 500px;
+}
+.lobilists .lobilist-item,
+.lobilists .lobilist-item-placeholder {
+  border-bottom: 1px solid #ccc;
+}
+.lobilists .lobilist-item-startdate, .lobilists .lobilist-item-duedate, .lobilists .lobilist-item-completedate, .lobilists .lobilist-item-duedate2 {
+  position: absolute;
+  top: 2px;
+  left: 12px;
+  margin-bottom: 10px;
+  font-style: normal;
+  color: #777777;
+  font-size: 85%;
+}
+.lobilists .lobilist-item-duedate {
+  left: 112px;
+  color: #333;
+}
+.lobilists .lobilist-item-completedate {
+  left: 212px;
+}
+.normal-status {
+  border-bottom: none;
+}
+.complete-by {
+  color: #5cb85c;
+  border-bottom: 2px solid #5cb85c;
+}
+.complete-past {
+  color: #5bc0de;
+  border-bottom: 2px solid #5bc0de;
+}
+.due-warning {
+  border-bottom: 2px solid #f0ad4e;
+}
+.overdue {
+  border-bottom: 2px solid #e27c79;
+}
+.lobilists .lobilist-check {
+  top: 26px;
+}
+.lobilists .lobilist-item-title {
+  margin-top: 10px;
+}
+
+
+@media (min-width: 711px) {
+  #importtodos {
+    top: 160px;
+    width: 426px;
+  }
+}
+
+@media (max-width: 710px) {
+  #importtodos {
+    top: 10px;
+    width: 340px;
+  }
+}

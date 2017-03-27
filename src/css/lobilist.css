@@ -1,7 +1,6 @@
 .lobilists .lobilist-wrapper,
 .lobilists .lobilist-placeholder {
   display: inline-block;
-  float: left;
   border: 1px solid transparent;
   margin-bottom: 16px;
   width: 360px;
@@ -97,6 +96,7 @@
   color: #FFF;
 }
 .lobilists .lobilist.lobilist-success .lobilist-title {
+  margin-top: 10px;
   color: #FFF;
 }
 .lobilists .lobilist.lobilist-success .lobilist-actions .btn {
