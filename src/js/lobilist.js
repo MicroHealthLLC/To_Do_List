@@ -6,8 +6,12 @@
  * @version 1.0.0
  * @licence MIT
  */
-$(function () {
 
+var start_date = new Date();
+var startdate = (start_date.getMonth() + 1) + "/" + start_date.getDate() + "/" + start_date.getFullYear();
+
+
+$(function () {
     var LIST_COUNTER = 0;
     /**
      * List class
@@ -305,7 +309,9 @@ $(function () {
             $form[0].id.value = $item.attr('data-id');
             $form[0].title.value = $item.find('.lobilist-item-title').html();
             $form[0].description.value = $item.find('.lobilist-item-description').html() || '';
+            $form[0].startDate.value = $item.find('.lobilist-item-startdate').html() || '';
             $form[0].dueDate.value = $item.find('.lobilist-item-duedate').html() || '';
+            $form[0].completeDate.value = $item.find('.lobilist-item-completedate').html() || '';
             return me;
         },
 
@@ -409,20 +415,37 @@ $(function () {
             $('<div class="form-group">').append(
                 $('<input>', {
                     'type': 'text',
+                    name: 'startDate',
+                    'class': 'form-control inputdate',
+                    placeholder: 'Start Date',
+                    'value': startdate
+                })
+            ).appendTo($form);
+            $('<div class="form-group">').append(
+                $('<input>', {
+                    'type': 'text',
                     name: 'dueDate',
-                    'class': 'form-control',
+                    'class': 'form-control inputdate',
                     placeholder: 'Due Date'
+                })
+            ).appendTo($form);
+            $('<div class="form-group">').append(
+                $('<input>', {
+                    'type': 'text',
+                    name: 'completeDate',
+                    'class': 'form-control inputdate',
+                    placeholder: 'Complete Date'
                 })
             ).appendTo($form);
             var $ft = $('<div class="lobilist-form-footer">');
             $('<button>', {
                 'class': 'btn btn-primary btn-sm btn-add-todo',
-                html: 'Add'
+                html: 'Submit'
             }).appendTo($ft);
             $('<button>', {
                 type: 'button',
                 'class': 'btn btn-default btn-sm btn-discard-todo',
-                html: '<i class="glyphicon glyphicon-remove-circle"></i>'
+                html: '<i class="glyphicon glyphicon-remove-sign"></i>'
             }).click(function () {
                 $form.addClass('hide');
                 me.$footer.removeClass('hide');
@@ -453,7 +476,9 @@ $(function () {
                 id: me.$form[0].id.value,
                 title: me.$form[0].title.value,
                 description:me. $form[0].description.value,
-                dueDate: me.$form[0].dueDate.value
+                startDate: me.$form[0].startDate.value,
+                dueDate: me.$form[0].dueDate.value,
+                completeDate: me.$form[0].completeDate.value
             });
             me.$form.addClass('hide');
             me.$footer.removeClass('hide');
@@ -531,12 +556,17 @@ $(function () {
                 item = $todo.data('lobiListItem');
             item.done = $this.prop('checked');
             if (item.done) {
-                me._triggerEvent('afterMarkAsDone', [me, item])
+                if ($this.parent().parent().find('.lobilist-item-completedate').text() === "") {
+                    alert('Fill in Complete Date');
+                    $this.prop('checked', false);
+                } else {
+                    me._triggerEvent('afterMarkAsDone', [me, item])
+                    $this.closest('.lobilist-item').toggleClass('item-done');
+                }
             } else {
                 me._triggerEvent('afterMarkAsUndone', [me, item])
+                $this.closest('.lobilist-item').toggleClass('item-done');
             }
-
-            $this.closest('.lobilist-item').toggleClass('item-done');
         },
 
         _createDropdownForStyleChange: function () {
@@ -596,7 +626,7 @@ $(function () {
         _createAddNewButton: function () {
 			var me = this;
             var $btn = $('<button>', {
-                'class': 'btn btn-default btn-xs',
+                'class': 'btn btn-default btn-xs addtodo',
                 html: '<i class="glyphicon glyphicon-plus"></i>'
             });
             $btn.click(function () {
@@ -609,7 +639,7 @@ $(function () {
         _createCloseButton: function () {
 			var me = this;
             var $btn = $('<button>', {
-                'class': 'btn btn-default btn-xs',
+                'class': 'btn btn-default btn-xs removetodo',
                 html: '<i class="glyphicon glyphicon-remove"></i>'
             });
             $btn.click(function(){
@@ -620,10 +650,16 @@ $(function () {
 
         _onRemoveListClick: function () {
 			var me = this;
-            me._triggerEvent('beforeListRemove', [me]);
-            me.remove();
-            me._triggerEvent('afterListRemove', [me]);
-            return me;
+            var wrapper = document.querySelectorAll("body .lobilist-wrapper");
+            var checkstr = window.confirm("Sure you want to delete this?");
+            if (checkstr === true) {
+                me._triggerEvent('beforeListRemove', [me]);
+                me.remove();
+                me._triggerEvent('afterListRemove', [me]);
+                return me;
+            } else {
+                return false;
+            }
         },
 
         _createFinishTitleEditing: function () {
@@ -652,7 +688,7 @@ $(function () {
 
         _createInput: function () {
 			var me = this;
-            var input = $('<input type="text" class="form-control">');
+            var input = $('<input type="text" class="form-control todotitle">');
             input.on('keyup', function (ev) {
                 if (ev.which === 13) {
                     me.finishTitleEditing();
@@ -730,16 +766,65 @@ $(function () {
                     html: item.description
                 }));
             }
-            if (item.dueDate) {
+            if (item.startDate) {
                 $li.append($('<div>', {
-                    'class': 'lobilist-item-duedate',
-                    html: item.dueDate
+                    'class': 'lobilist-item-startdate',
+                    html: item.startDate
                 }));
             }
+            var todaydate = new Date();
+            todaydate.setHours(0,0,0,0);
+            if (item.completeDate !== "") {
+                var completedate = new Date(item.completeDate);
+            }
+            if (item.dueDate) {
+                var duedate = new Date(item.dueDate);
+                if (item.completeDate === "") {
+                    if (todaydate < duedate) {
+                        $li.append($('<div>', {
+                            'class': 'lobilist-item-duedate normal-status',
+                            html: item.dueDate
+                        }));
+                    } else if (todaydate > duedate) {
+                        $li.append($('<div>', {
+                            'class': 'lobilist-item-duedate overdue',
+                            html: item.dueDate
+                        }));
+                    } else {
+                        $li.append($('<div>', {
+                            'class': 'lobilist-item-duedate due-warning',
+                            html: item.dueDate
+                        }));
+                    }
+                } else {
+                    $li.append($('<div>', {
+                        'class': 'lobilist-item-duedate normal-status',
+                        html: item.dueDate
+                    }));
+                }
+            }
+            if (item.completeDate) {
+                if ((item.dueDate) && (completedate > duedate)) {
+                    $li.append($('<div>', {
+                        'class': 'lobilist-item-completedate complete-past',
+                        html: item.completeDate
+                    }));
+                } else {
+                    $li.append($('<div>', {
+                        'class': 'lobilist-item-completedate complete-by',
+                        html: item.completeDate
+                    }));
+                }
+            }
             $li = me._addItemControls($li);
-            if (item.done) {
-                $li.find('input[type=checkbox]').prop('checked', true);
-                $li.addClass('item-done');
+            if (item.completeDate) {
+                if (item.done) {
+                    $li.find('input[type=checkbox]').prop('checked', true);
+                    $li.addClass('item-done');
+                }
+            } else {
+                $li.find('input[type=checkbox]').prop('checked', false);
+                $li.removeClass('item-done');
             }
             $li.data('lobiListItem', item);
             me.$ul.append($li);
@@ -783,23 +868,58 @@ $(function () {
         },
 
         _onDeleteItemClick: function (item) {
-            this.deleteItem(item);
+            var checkstr = window.confirm("Sure you want to delete this?");
+            if (checkstr === true) {
+                this.deleteItem(item);
+            } else {
+                return false;
+            }
         },
 
         _updateItemInList: function (item) {
 			var me = this;
             var $li = me.$lobiList.$el.find('li[data-id="' + item.id + '"]');
-            $li.find('input[type=checkbox]').prop('checked', item.done);
             $li.find('.lobilist-item-title').html(item.title);
             $li.find('.lobilist-item-description').remove();
+            $li.find('.lobilist-item-startdate').remove();
             $li.find('.lobilist-item-duedate').remove();
+            $li.find('.lobilist-item-completedate').remove();
 
             if (item.description) {
                 $li.append('<div class="lobilist-item-description">' + item.description + '</div>');
             }
-            if (item.dueDate) {
-                $li.append('<div class="lobilist-item-duedate">' + item.dueDate + '</div>');
+            if (item.startDate) {
+                $li.append('<div class="lobilist-item-startdate">' + item.startDate + '</div>');
             }
+            var todaydate = new Date();
+            todaydate.setHours(0,0,0,0);
+            if (item.completeDate !== "") {
+                var completedate = new Date(item.completeDate);
+            }
+            if (item.dueDate) {
+                var duedate = new Date(item.dueDate);
+                if (item.completeDate === "") {
+                    if (todaydate < duedate) {
+                        $li.append('<div class="lobilist-item-duedate normal-status">' + item.dueDate + '</div>');
+                    } else if (todaydate > duedate) {
+                        $li.append('<div class="lobilist-item-duedate overdue">' + item.dueDate + '</div>');
+                    } else {
+                        $li.append('<div class="lobilist-item-duedate due-warning">' + item.dueDate + '</div>');
+                    }
+                } else {
+                    $li.append('<div class="lobilist-item-duedate normal-status">' + item.dueDate + '</div>');
+                }
+            }
+            if (item.completeDate) {
+                if ((item.dueDate) && (completedate > duedate)) {
+                    $li.append('<div class="lobilist-item-completedate complete-past">' + item.completeDate + '</div>');
+                } else {
+                    $li.append('<div class="lobilist-item-completedate complete-by">' + item.completeDate + '</div>');
+                }
+            } else {
+                $li.find('input[type=checkbox]').prop('checked', false);
+                $li.removeClass('item-done');
+            } 
             $li.data('lobiListItem', item);
             $.extend(me.$items[item.id], item);
             me._triggerEvent('afterItemUpdate', [me, item]);
@@ -1070,7 +1190,9 @@ $(function () {
             id: false,
             title: '',
             description: '',
+            startDate: '',
             dueDate: '',
+            completeDate: '',
             done: false
         },
 
@@ -1091,9 +1213,10 @@ $(function () {
         // Whether to make lists and todos sortable
         sortable: true,
         // Default action buttons for all lists
-        controls: ['edit', 'add', 'remove', 'styleChange'],
+//        controls: ['edit', 'add', 'remove', 'styleChange'],
+        controls: ['edit', 'add', 'remove'],
         //List style
-        defaultStyle: 'lobilist-default',
+        defaultStyle: 'lobilist-primary',
         // Whether to show lists on single line or not
         onSingleLine: true,
 
