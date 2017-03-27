@@ -1,3 +1,19 @@
+
+# To Do List
+Extends the jQuery plugin for todo lists (LobiList) with the Bootstrap Datepicker plugin (see below for details).
+
+### Added Features
+
+- Start Date (default today's date)
+- Indication for 'due today' and 'overdue'
+- Complete Date with indication of 'by' or 'past' Due Date
+- Import file
+- Export file
+- localStorage
+- Confirm deletes
+- Reset
+
+
 # LobiList
 jQuery plugin for todo lists. Supports drag & drop of todos. Multiple lists with different colors. Support for communication to backend
 
