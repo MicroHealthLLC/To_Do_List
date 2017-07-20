@@ -1,3 +1,9 @@
+See To_Do_List, the modified version of LobiList.
+
+https://github.com/MicroHealthLLC/To_Do_List/tree/version_2
+
+------------------------------------------------------------------------------------
+
 # LobiList
 jQuery plugin for todo lists. Supports drag & drop of todos. Multiple lists with different colors. Support for communication to backend
 
