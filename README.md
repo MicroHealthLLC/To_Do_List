@@ -13,7 +13,13 @@ Extends the jQuery plugin for todo lists (LobiList) with the Bootstrap Datepicke
 - Confirm deletes
 - Reset
 
+### Instructions
 
+- Download the files
+- Open a browser and drag the index.html onto the window
+
+
+---------------------------------------------------------------------------------------------------------------
 # LobiList
 jQuery plugin for todo lists. Supports drag & drop of todos. Multiple lists with different colors. Support for communication to backend
 
