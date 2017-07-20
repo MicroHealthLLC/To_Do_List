@@ -18,6 +18,10 @@ Extends the jQuery plugin for todo lists (LobiList) with the Bootstrap Datepicke
 - Download the files
 - Open a browser and drag the index.html onto the window
 
+<p><img src="to_do_list_screenshot.jpg"></p>
+
+
+
 
 ---------------------------------------------------------------------------------------------------------------
 # LobiList
